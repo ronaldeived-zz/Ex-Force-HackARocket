@@ -1,13 +1,15 @@
 import express from "express";
 import { processarRequisicao } from "./app";
+import { redisClient } from "./redis/redisClient";
 
 const routes = express.Router();
 
+routes.get("/", (request, response) => {
+  response.send("OK");
+});
+
 routes.post("/capturar_requisicoes", async (request, response) => {
-  console.log("name" in request.body)
-  console.log("valia" in request.body)
-  console.log(request.body.time)
-  //await processarRequisicao(request.body);
+  //processarRequisicao(request.body);
 });
 
 export default routes;

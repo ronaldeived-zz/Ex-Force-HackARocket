@@ -3,8 +3,9 @@ import { mensagemTexto } from "./models/mensagem.model";
 import { redisClient } from "./redis/redisClient";
 import { empresa } from "./models/empresa.model";
 import connection from "./database/connection";
-import request from 'request';
-
+import request from "request";
+import { extrairCliente } from "./utils";
+import { templates } from "./messageTemplates";
 
 const redis = new redisClient();
 var dbConnection = connection;
@@ -63,41 +64,32 @@ const textoExemplo: mensagemTexto = {
 };
 
 export function processarRequisicao(requisicao: any) {
-  //const stateAtual = redis.get()
-  if ("message" in requisicao) {
-    const from =  requisicao.message.from;
-    if (from) {
-      if ("visitor" in requisicao.message) {
-        let firstName = requisicao.message.visitor.firstName;
-        if (!firstName) {
-          firstName = "Usuario";
-        }
-      }
-      if ("contents" in requisicao.message) {
-        requisicao.message.contents.array.forEach(element => {
-          
-        });
-      }
-    }
-    
-    if (requisicao.contents.type) {
-      
-    }
+  const cliente = extrairCliente(requisicao);
+
+  if (cliente.numero != "") {
+    const clienteEstado = redis.get(cliente.numero);
+    //templates[clienteEstado]
   }
-  enviaMensagem(contatoExemplo);
+
+  console.log(cliente);
+  //const stateAtual = redis.get()
+  //enviaMensagem(contatoExemplo);
 }
 
 function enviaMensagem(mensagem: mensagemContato | mensagemTexto) {
-  request.post({
+  request.post(
+    {
       url: "https://api.zenvia.com/v1/channels/whatsapp/messages",
       method: "POST",
       json: true,
       headers: {
-          "content-type": "application/json",
-          "X-API-TOKEN": "ztr6CSDMXJXri6NhNwQnqyvxlVW1XPdbwMDu"  // <--Very important!!!
+        "content-type": "application/json",
+        "X-API-TOKEN": "ztr6CSDMXJXri6NhNwQnqyvxlVW1XPdbwMDu",
       },
-      body: mensagem
-  }, function (error, response, body){
+      body: mensagem,
+    },
+    function (error, response, body) {
       console.log(response);
-  });
+    }
+  );
 }

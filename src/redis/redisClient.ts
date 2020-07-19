@@ -1,4 +1,4 @@
-import redis from 'redis';
+import redis from "redis";
 
 //const redis = require("redis");
 
@@ -18,19 +18,24 @@ export class redisClient {
   }
 
   set(key: string, value: any) {
-    this.client.set(key, value, "EX", 60*15, (err: any, reply: any) => {
+    this.client.set(key, value, "EX", 60 * 15, (err: any, reply: any) => {
       console.log(reply);
     });
   }
 
   get(key: string) {
-    this.client.get("Message", (err: any, reply: any) => {
+    let value;
+
+    this.client.get(key, (err: any, reply: any) => {
       if (reply !== null) {
-        return reply;
+        console.log(reply);
+        value = reply;
       } else {
         this.set(key, 0);
-        return 0;
+        value = 0;
       }
     });
+
+    return value;
   }
 }

@@ -2,6 +2,38 @@ POST http://localhost:3333/capturar_requisicoes HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+  "id": "1650b5bb-3bc1-49db-a50f-04f0e58dfdbb",
+  "timestamp": "2020-07-18T15:09:52.797Z",
+  "type": "MESSAGE",
+  "subscriptionId": "4af8fac6-da8d-4200-8eea-e54d855298f2",
+  "channel": "whatsapp",
+  "direction": "IN",
+  "message": {
+    "id": "c4c1b24b-2adf-41c8-b47e-31a2050673c8",
+    "from": "5515996976651",
+    "to": "tall-leader",
+    "direction": "IN",
+    "channel": "whatsapp",
+    "visitor": {
+      "name": "Caah🖖",
+      "firstName": "Caah🖖",
+      "lastName": ""
+    },
+    "contents": [
+      {
+        "type": "json",
+        "payload": {
+          "visitor": {
+            "name": "Caah🖖",
+            "firstName": "Caah🖖",
+            "lastName": ""
+          }
+        }
+      },
+      {
+        "type": "text",
+        "text": "Triste"
+      }
+    ]
+  }
 }
