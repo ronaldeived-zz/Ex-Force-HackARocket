@@ -15,19 +15,20 @@ export class redisClient {
     });
   }
 
-  get(key: string) {
-    this.client.get("Message", function (err: any, reply: any) {
-      if (reply !== null) {
-        console.log(reply);
-      } else {
-        console.log("Precisa setar o estado do cliente");
-      }
+  set(key: string, value: any) {
+    this.client.set(key, value, "EX", 10, (err: any, reply: any) => {
+      console.log(reply);
     });
   }
 
-  set(key: string, value: any) {
-    this.client.set(key, value, "EX", 10, function (err: any, reply: any) {
-      console.log(reply);
+  get(key: string) {
+    this.client.get("Message", (err: any, reply: any) => {
+      if (reply !== null) {
+        return reply;
+      } else {
+        this.set(key, 0);
+        return 0;
+      }
     });
   }
 }
