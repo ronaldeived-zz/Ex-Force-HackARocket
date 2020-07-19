@@ -1,11 +1,13 @@
-import knex from 'knex';
-import path from 'path';
+import knex from "knex";
 
-const connection = knex ({
-    client: 'sqlite3',
-    connection: {
-        filename: path.resolve(__dirname, 'database.sqlite'),
-    }
+const connection = knex({
+  client: "mysql",
+  connection: {
+    host: "db-mysqlserver.mysql.database.azure.com",
+    user: "LuanCloud@db-mysqlserver",
+    password: "Alura!123",
+    database: "dbmysql",
+  },
 });
 
 export default connection;
