@@ -3,8 +3,8 @@ import { mensagemTexto } from "./models/mensagem.model";
 import { redisClient } from "./redis/redisClient";
 import { empresa } from "./models/empresa.model";
 import connection from "./database/connection";
+import request from 'request';
 
-var request = require("request");
 
 const redis = new redisClient();
 var dbConnection = connection;
@@ -16,15 +16,15 @@ const dados: empresa = {
   nome: "Ex-Force Pasteis",
 };
 
-dbConnection
-  .insert(dados)
-  .into("empresas")
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// dbConnection
+//   .insert(dados)
+//   .into("empresas")
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 
 const contatoExemplo: mensagemContato = {
   from: "tall-leader",
@@ -40,9 +40,9 @@ const contatoExemplo: mensagemContato = {
           },
           phones: [
             {
-              phone: "5515997332834 (numero da empresa)",
+              phone: "5515988287152",
               type: "CELL",
-              waId: "5515997332834 (numero da empresa)",
+              waId: "5515988287152",
             },
           ],
         },
@@ -57,20 +57,47 @@ const textoExemplo: mensagemTexto = {
   contents: [
     {
       type: "text",
-      texto: "Texto da mensagem",
+      text: "Testando a mensagem",
     },
   ],
 };
 
-export function processarRequisicao(requisicao: any) {}
+export function processarRequisicao(requisicao: any) {
+  //const stateAtual = redis.get()
+  if ("message" in requisicao) {
+    const from =  requisicao.message.from;
+    if (from) {
+      if ("visitor" in requisicao.message) {
+        let firstName = requisicao.message.visitor.firstName;
+        if (!firstName) {
+          firstName = "Usuario";
+        }
+      }
+      if ("contents" in requisicao.message) {
+        requisicao.message.contents.array.forEach(element => {
+          
+        });
+      }
+    }
+    
+    if (requisicao.contents.type) {
+      
+    }
+  }
+  enviaMensagem(contatoExemplo);
+}
 
 function enviaMensagem(mensagem: mensagemContato | mensagemTexto) {
-  request(
-    "https://api.zenvia.com/v1/channels/whatsapp/messages",
-    (error: any, response: any, body: any) => {
-      console.log("error:", error); // Print the error if one occurred
-      console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
-      console.log("body:", body); // Print the HTML for the Google homepage.
-    }
-  );
+  request.post({
+      url: "https://api.zenvia.com/v1/channels/whatsapp/messages",
+      method: "POST",
+      json: true,
+      headers: {
+          "content-type": "application/json",
+          "X-API-TOKEN": "ztr6CSDMXJXri6NhNwQnqyvxlVW1XPdbwMDu"  // <--Very important!!!
+      },
+      body: mensagem
+  }, function (error, response, body){
+      console.log(response);
+  });
 }

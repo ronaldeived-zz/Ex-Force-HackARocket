@@ -6,5 +6,5 @@ export interface mensagemTexto {
 
 interface mensagemTextoContent {
   type: "text";
-  texto: string;
+  text: string;
 }

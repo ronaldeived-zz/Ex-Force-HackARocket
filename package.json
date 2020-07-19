@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/redis": "^2.8.25",
+    "@types/request": "^2.48.5",
     "express": "^4.17.1",
     "knex": "^0.21.2",
     "mssql": "^6.2.0",

@@ -1,4 +1,6 @@
-const redis = require("redis");
+import redis from 'redis';
+
+//const redis = require("redis");
 
 const REDISCACHEKEY = "4TmZwfgU4BXcZu2CgaLTk3XO5aWzsHBfBgLdYr577jU=";
 const REDISCACHEHOSTNAME = "dbhack.redis.cache.windows.net";
@@ -16,7 +18,7 @@ export class redisClient {
   }
 
   set(key: string, value: any) {
-    this.client.set(key, value, "EX", 10, (err: any, reply: any) => {
+    this.client.set(key, value, "EX", 60*15, (err: any, reply: any) => {
       console.log(reply);
     });
   }
