@@ -67,8 +67,9 @@ export function processarRequisicao(requisicao: any) {
   const cliente = extrairCliente(requisicao);
 
   if (cliente.numero != "") {
-    const clienteEstado = redis.get(cliente.numero);
-    //templates[clienteEstado]
+    redis.get(cliente.numero).then((estado: number) => {
+      templates[1];
+    });
   }
 
   console.log(cliente);
