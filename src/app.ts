@@ -3,7 +3,6 @@ import { mensagemTexto } from "./models/mensagem.model";
 import { redisClient } from "./redis/redisClient";
 import { empresa } from "./models/empresa.model";
 import connection from "./database/connection";
-import request from "request";
 import { extrairCliente } from "./utils";
 import { templates } from "./messageTemplates";
 
@@ -17,40 +16,15 @@ const dados: empresa = {
   nome: "Ex-Force Pasteis",
 };
 
-// dbConnection
-//   .insert(dados)
-//   .into("empresas")
-//   .then((data) => {
-//     console.log(data);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-const contatoExemplo: mensagemContato = {
-  from: "tall-leader",
-  to: "5515997332834",
-  contents: [
-    {
-      type: "contacts",
-      contacts: [
-        {
-          name: {
-            firstName: "Nome da Empresa",
-            formattedName: "Nome da Empresa",
-          },
-          phones: [
-            {
-              phone: "5515988287152",
-              type: "CELL",
-              waId: "5515988287152",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+dbConnection
+  .insert(dados)
+  .into("empresas")
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const textoExemplo: mensagemTexto = {
   from: "tall-leader",
@@ -68,29 +42,11 @@ export function processarRequisicao(requisicao: any) {
 
   if (cliente.numero != "") {
     redis.get(cliente.numero).then((estado: number) => {
-      templates[1];
+      templates[1].funcao(cliente); //executar o numero do estado @TODO
     });
   }
 
   console.log(cliente);
   //const stateAtual = redis.get()
   //enviaMensagem(contatoExemplo);
-}
-
-function enviaMensagem(mensagem: mensagemContato | mensagemTexto) {
-  request.post(
-    {
-      url: "https://api.zenvia.com/v1/channels/whatsapp/messages",
-      method: "POST",
-      json: true,
-      headers: {
-        "content-type": "application/json",
-        "X-API-TOKEN": "ztr6CSDMXJXri6NhNwQnqyvxlVW1XPdbwMDu",
-      },
-      body: mensagem,
-    },
-    function (error, response, body) {
-      console.log(response);
-    }
-  );
 }
